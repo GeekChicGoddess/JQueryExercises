@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+
+<h1 id="firstpar">This is my JQuery Exercise</h1>
+<div id="myDiv">My lackluster div
+    <p id="firstpar">It isn't much to look at; I'm not feeling inspired today for various reasons.</p>
+    <ul>
+        <li class="myLis">I need a nap</li>
+        <li class="myLis">Yeah, mostly it's just the nap thing</li>
+    </ul>
+
+</div>
+
+
+
+
+
+<script
+        src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+
+        var contents = $('#firstpar').text();
+        alert(contents);
+
+
+
+
+    });
+</script>
+
+</body>
+</html>
