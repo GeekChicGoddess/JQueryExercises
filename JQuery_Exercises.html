@@ -8,11 +8,12 @@
 
 
 
-<h1 id="firstpar">This is my JQuery Exercise</h1>
-<div id="myDiv">My lackluster div
+<h1 class="codeup" id="firstpar">This is my JQuery Exercise</h1>
+<div class="codeup" id="myDiv">My lackluster div
     <p id="firstpar">It isn't much to look at; I'm not feeling inspired today for various reasons.</p>
+    <p class="codeup">My second paragraph here</p>
     <ul>
-        <li class="myLis">I need a nap</li>
+        <li id = "codeup" class="myLis">I need a nap</li>
         <li class="myLis">Yeah, mostly it's just the nap thing</li>
     </ul>
 
@@ -29,8 +30,10 @@
 <script>
     $(document).ready(function(){
 
-        var contents = $('#firstpar').text();
-        alert(contents);
+        $(".codeup").css("border", "1px solid red ");
+
+
+        //$('li').css("font-size", "11px");
 
 
 
