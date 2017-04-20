@@ -8,13 +8,13 @@
 
 
 
-<h1 class="codeup" id="firstpar">This is my JQuery Exercise</h1>
+<h1 class="highlight" id="firstpar">This is my JQuery Exercise</h1>
 <div class="codeup" id="myDiv">My lackluster div
-    <p id="firstpar">It isn't much to look at; I'm not feeling inspired today for various reasons.</p>
-    <p class="codeup">My second paragraph here</p>
+    <p class="highlight" id="firstpar">It isn't much to look at; I'm not feeling inspired today for various reasons.</p>
+    <p class="highlight">My second paragraph here</p>
     <ul>
-        <li id = "codeup" class="myLis">I need a nap</li>
-        <li class="myLis">Yeah, mostly it's just the nap thing</li>
+        <li class="myLis highlight">I need a nap</li>
+        <li class="myLis highlight">Yeah, mostly it's just the nap thing</li>
     </ul>
 
 </div>
@@ -30,10 +30,15 @@
 <script>
     $(document).ready(function(){
 
-        $(".codeup").css("border", "1px solid red ");
 
 
-        //$('li').css("font-size", "11px");
+
+        $('li').css("font-size", "20px");
+
+        $(".highlight").css("background-color", "#f8fc83");
+
+        var contents = $("h1").text();
+        alert(contents);
 
 
 
