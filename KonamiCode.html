@@ -3,17 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Konami</title>
-<style type="text/css">
-body {
-    background-image: url("img/nightSky.gif");
-}
-div {
-    height: 8em;
-    width: 8em;
-    background-image: url("img/graphics-fireworks-325975.gif");
-    display: inline-block;
-}
-</style>
+    <style type="text/css">
+        body {
+            background-image: url("img/calvinHobbesSky.gif");
+        }
+        div {
+            display: none;
+            float: right;
+        }
+        #fireworks1 {
+            background-image: url("img/graphics-fireworks-325975.gif");
+            width: 8em;
+            height: 8em;
+            margin-top: 0em;
+
+        }
+        #fireworks2{
+            background-image: url("img/graphics-fireworks-088653.gif");
+            height: 12em;
+            width: 12.5em;
+            margin-top: 5em;
+
+        }
+        #fireworks3 {
+            background-image: url("img/graphics-fireworks-325975.gif");
+            width: 8em;
+            height: 8em;
+            margin-top: 10em;
+
+        }
+        #fireworks4 {
+            background-image: url("img/graphics-fireworks-234379.gif");
+            width: 12.5em;
+            height: 8em;
+             margin-top: 0em;
+
+
+
+         }
+        #fireworks5 {
+            background-image: url("img/graphics-fireworks-325975.gif");
+            width: 8em;
+            height: 8em;
+            margin-top: 15em;
+
+
+        }
+        #fireworks6 {
+            background-image: url("img/graphics-fireworks-088653.gif");
+            height: 12em;
+            width: 12.5em;
+            margin-top: 8em;
+
+        }
+        #fireworks7 {
+            background-image: url("img/graphics-fireworks-234379.gif");
+            width: 12.5em;
+            height: 8em;
+            margin-top: 0em;
+
+
+        }
+        #fireworks8 {
+            background-image: url("img/graphics-fireworks-325975.gif");
+            width: 8em;
+            height: 8em;
+            margin-top: 10em;
+
+
+
+        }
+        #fireworks9 {
+            background-image: url("img/graphics-fireworks-088653.gif");
+            height: 12em;
+            width: 12.5em;
+            margin-top: 1em;
+        }
+        #fireworks10 {
+            background-image: url("img/graphics-fireworks-325975.gif");
+            width: 8em;
+            height: 8em;
+            margin-top: 0em;
+            margin-right: -25em;
+        }
+        #fireworks11 {
+            background-image: url("img/graphics-fireworks-325975.gif");
+            width: 8em;
+            height: 8em;
+          }
+        p {
+            color: snow;
+            font-size: 2em;
+            position: absolute;
+            margin-left: 35em;
+            margin-top: 23em;
+        }
+
+
+    </style>
 
 </head>
 <body>
@@ -24,6 +111,15 @@ div {
 <div id="fireworks4"></div>
 <div id="fireworks5"></div>
 <div id="fireworks6"></div>
+<div id="fireworks7"></div>
+<div id="fireworks8"></div>
+<div id="fireworks9"></div>
+<div id="fireworks10"></div>
+<div id="fireworks11"></div>
+
+<p>Konami Code for Night Show</p>
+
+
 
 <script
         src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -102,20 +198,132 @@ div {
             }
             else if ( event.keyCode == 65 ) {
                 if (konami.length == 9) {
-                    konami.push("1");
-                    console.log(konami);
+                    konami = [];
+                    $("div").css("display", "inline-block");
+                    $("p").css("display", "none");
+                    console.log("fireworks");
+                    fireworks();
                 }
 
                 else {
                     konami = [];
                 }
             }
+            else if (event.keyCode == 27 ){
+                $("div").css("display", "none");
+                $("p").css("display", "block");
+
+                konami = [];
+
+            }
             else {
                 konami = [];
             }
         });
 
-    });
+
+
+
+
+        function fireworks (){
+
+            console.log("fireworks running")
+            var time = 4000;
+
+             function timeoutChangeToGreen (fireworksid, pausetime){
+                 setTimeout(function(){
+                     $(fireworksid).css("background-image", "url('img/graphics-fireworks-325975.gif')");
+                     $(fireworksid).css("width", "8em");
+                     $(fireworksid).css("height", "8em");
+            }, pausetime)}
+
+
+            function timeoutChangeToRed (fireworksid, pausetime){
+                 setTimeout(function(){
+                     $(fireworksid).css("background-image", "url('img/graphics-fireworks-234379.gif')");
+                     $(fireworksid).css("width", "12em");
+                     $(fireworksid).css("height", "8em");
+            }, pausetime)}
+
+
+            function timeoutChangeToPurple(fireworksid, pausetime){
+                setTimeout(function(){
+                    $(fireworksid).css("background-image", "url('img/graphics-fireworks-088653.gif')");
+                    $(fireworksid).css("width", "12.5em");
+                    $(fireworksid).css("height", "12em");
+
+            }, pausetime)}
+
+            setInterval(function(){
+                timeoutChangeToRed("#fireworks1", time);
+                timeoutChangeToPurple("#fireworks1", time*2);
+                timeoutChangeToGreen("#fireworks1", time*3);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToGreen("#fireworks2", time-1000);
+                timeoutChangeToRed("#fireworks2",  time*1.5);
+                timeoutChangeToPurple("#fireworks2", time*2.5);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToRed("#fireworks3", time+1000);
+                timeoutChangeToPurple("#fireworks3", (time+1000)*2);
+                timeoutChangeToGreen("#fireworks3", (time+500)*3);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToPurple("#fireworks4", time);
+                timeoutChangeToGreen("#fireworks4", time*2);
+                timeoutChangeToRed("#fireworks4", time*3);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToRed("#fireworks5", time-1000);
+                timeoutChangeToPurple("#fireworks5", time*1.5);
+                timeoutChangeToGreen("#fireworks5", time*2.5);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToGreen("#fireworks6", time + 1000);
+                timeoutChangeToRed("#fireworks6", (time+1000)*2);
+                timeoutChangeToPurple("#fireworks6", (time+500)*3);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToPurple("#fireworks7", time);
+                timeoutChangeToGreen("#fireworks7", time*2);
+                timeoutChangeToRed("#fireworks7", time*3);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToRed("#fireworks8", time);
+                timeoutChangeToPurple("#fireworks8", time*2);
+                timeoutChangeToGreen("#fireworks8", time*3);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToGreen("#fireworks9", time);
+                timeoutChangeToRed("#fireworks9", time*2);
+                timeoutChangeToPurple("#fireworks9", time*3);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToRed("#fireworks10", time);
+                timeoutChangeToPurple("#fireworks10", time*2);
+                timeoutChangeToGreen("#fireworks10", time*3);
+            }, 3000);
+
+            setInterval(function(){
+                timeoutChangeToRed("#fireworks11", time);
+                timeoutChangeToPurple("#fireworks11", time*2);
+                timeoutChangeToGreen("#fireworks11", time*3);
+            }, 3000);
+
+        }
+
+
+   });
 
 
 </script>
