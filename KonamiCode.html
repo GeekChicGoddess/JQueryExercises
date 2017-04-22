@@ -209,12 +209,20 @@
                 arrayOfArguments[i-1] = arrayOfArguments[i-1].concat(temparray);
             }
 
-            setInterval(function () {
-                for (var i = 0; i < arrayOfArguments.length; i++){
-                    var whichFireworks = [Math.floor(Math.random()*5.9)];
-                    arrayOfFireworks[whichFireworks](arrayOfArguments[i][whichFireworks].arg1, arrayOfArguments[i][whichFireworks].arg2);
-                }
-            }, 4500);
+            for (var i = 0; i < arrayOfArguments.length; i++){
+
+                (function(index){
+                    setInterval(function () {
+                        var whichFireworks = [Math.floor(Math.random()*5.9)];
+                        arrayOfFireworks[whichFireworks](arrayOfArguments[index][whichFireworks].arg1, arrayOfArguments[index][whichFireworks].arg2);
+                    }, 5200);
+                })(i);
+            }
+
+
+
+
+
         }
 
         fireworks();
