@@ -13,57 +13,38 @@
         .fireworks {
             display: none;
             position: absolute;
-            color: white;
-
         }
         #fireworks1 {
             margin-left: 80em;
             margin-top: 0em;
-
-
         }
         #fireworks2{
-
             margin-top: 5em;
             margin-left: 60em;
-
         }
         #fireworks3 {
             margin-left: 42em;
             margin-top: 10em;
-
         }
         #fireworks4 {
-
-             margin-top: 18em;
+            margin-top: 18em;
             margin-left: 85em;
-
-
-
-         }
+        }
         #fireworks5 {
             margin-top: 15em;
             margin-left: 72em;
-
-
         }
         #fireworks6 {
-
             margin-top: 8em;
             margin-left: 7em;
-
         }
         #fireworks7 {
             margin-top: 0em;
             margin-left: 40em;
-
-
         }
         #fireworks8 {
             margin-top: 15em;
             margin-left: 32em;
-
-
         }
         #fireworks9 {
             margin-left: 23em;
@@ -88,9 +69,7 @@
             margin-left: 35em;
             margin-top: 23em;
             transition: display 3s;
-
         }
-
 
     </style>
 
@@ -122,32 +101,25 @@
 <script>
     $(document).ready(function(){
 
-    var konami = [];
-
+        var konami = [];
         $(document).on("keydown", function() {
-
             if ( event.keyCode == 38 ) {
                 if (konami.length == 0) {
                     konami.push("1");
-                    console.log(konami);
                 }
                 else if (konami.length == 1) {
                     konami.push("1");
-                    console.log(konami);
                 }
                 else {
                     konami = [];
                 }
             }
-
             else if ( event.keyCode == 40 ) {
                 if (konami.length == 2) {
                     konami.push("1");
-                    console.log(konami);
                 }
                 else if (konami.length == 3) {
                     konami.push("1");
-                    console.log(konami);
                 }
                 else {
                     konami = [];
@@ -156,11 +128,9 @@
             else if ( event.keyCode == 37 ) {
                 if (konami.length == 4) {
                     konami.push("1");
-                    console.log(konami);
                 }
                 else if (konami.length == 6) {
                     konami.push("1");
-                    console.log(konami);
                 }
                 else {
                     konami = [];
@@ -169,11 +139,9 @@
             else if ( event.keyCode == 39 ) {
                 if (konami.length == 5) {
                     konami.push("1");
-                    console.log(konami);
                 }
                 else if (konami.length == 7) {
                     konami.push("1");
-                    console.log(konami);
                 }
                 else {
                     konami = [];
@@ -182,9 +150,7 @@
             else if ( event.keyCode == 66 ) {
                 if (konami.length == 8) {
                     konami.push("1");
-                    console.log(konami);
                 }
-
                 else {
                     konami = [];
                 }
@@ -193,11 +159,9 @@
                 if (konami.length == 9) {
                     konami = [];
                     $("div").fadeIn("slow",function () {
-                    $("div").css("display", "inline-block")});
+                        $("div").css("display", "inline-block")});
                     $("p").css("display", "none");
-
                 }
-
                 else {
                     konami = [];
                 }
@@ -205,16 +169,12 @@
             else if (event.keyCode == 27 ){
                 $("div").css("display", "none");
                 $("p").css("display", "block");
-
                 konami = [];
-
             }
             else {
                 konami = [];
             }
         });
-
-
 
 
 
@@ -249,16 +209,12 @@
                 arrayOfArguments[i-1] = arrayOfArguments[i-1].concat(temparray);
             }
 
-
             setInterval(function () {
-                    for (var i = 0; i < arrayOfArguments.length; i++){
-                            var whichFireworks = [Math.floor(Math.random()*5.9)];
-
-                            arrayOfFireworks[whichFireworks](arrayOfArguments[i][whichFireworks].arg1, arrayOfArguments[i][whichFireworks].arg2);
-
-                        }
-            }, 4000);
-
+                for (var i = 0; i < arrayOfArguments.length; i++){
+                    var whichFireworks = [Math.floor(Math.random()*5.9)];
+                    arrayOfFireworks[whichFireworks](arrayOfArguments[i][whichFireworks].arg1, arrayOfArguments[i][whichFireworks].arg2);
+                }
+            }, 4500);
         }
 
         fireworks();
