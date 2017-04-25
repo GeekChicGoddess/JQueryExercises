@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Swap</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style type="text/css">
+        .frame {
+            display: inline-block;
+        }
+        #one {
+            border: solid 6px blue;
+        }#two {
+            border: solid 6px yellow;
+        }#three {
+            border: solid 6px black;
+        }
+        button {
+            margin-left: 5%;
+            margin-right: 15%;
+        }
+    </style>
+</head>
+<body>
+<div class="jumbotron">
+<div class="container">
+<div id="one" class="frame"><img src="https://dummyimage.com/300x200/23568c/fff&text=Mom"></div>
+<div id="two" class="frame"><img src="https://dummyimage.com/300x200/238a55/fff&text=Dad"></div>
+<div id="three" class="frame"><img src="https://dummyimage.com/300x200/8a2481/fff&text=Kids"></div>
+</div>
+    <div class="container">
+        <button id="swapRight">Swap Right</button>
+        <button id="swapRandom">Swap Random</button>
+        <button id="swapLeft">Swap Left</button>
+    </div>
+</div>
+
+<script
+        src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous">
+</script>
+<script>
+    $(document).ready(function(){
+
+    $("#swapRight").click(function(){
+       var image1 = $("#one").children().clone();
+       var image2 = $("#two").children().clone();
+       $("#one").html(image2);
+        $("#two").html(image1);
+    });
+        $("#swapRandom").click(function(){
+            var image1 = $("#one").children().clone();
+            var image2 = $("#two").children().clone();
+            var image3 = $("#three").children().clone();
+            var imageRandom = Math.floor(Math.random()*2 + 1);
+            if (imageRandom == 1){
+                $("#two").html(image1);
+                $("#one").html(image2);
+            }
+            else {
+                $("#two").html(image3);
+                $("#three").html(image2);
+            }
+
+        });
+
+        $("#swapLeft").click(function(){
+            var image1 = $("#two").children().clone();
+            var image2 = $("#three").children().clone();
+            $("#two").html(image2);
+            $("#three").html(image1);
+        });
+
+
+
+    });
+</script>
+</body>
+</html>
