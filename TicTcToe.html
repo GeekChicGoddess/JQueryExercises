@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicTacToe</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style type="text/css">
+        #wholeGame{
+            height: 50em;
+            width: 55em;
+            background-color: burlywood;
+            margin-left: 25%;
+            margin-top: 5em;
+            text-align: center;
+        }
+        #gameboard {
+            margin-left: -25%;
+        }
+        table {
+            margin-left: 0;
+            border-collapse: collapse;
+        }
+        button {
+            height: 2.75em;
+            width: 8em;
+            margin-top: 1em;
+            background-color: beige;
+        }
+
+        #playerOne {
+            margin-right: 10em;
+        }
+        /* entire container, keeps perspective */
+        .flip-container {
+            perspective: 1000px;
+            display: inline-block;
+        }
+        /* flip the pane when hovered */
+        .flip-container:hover .flipper, .flip-container.hover .flipper {
+            transform: rotateY(180deg);
+        }
+
+        .flip-container, .front, .back, .secondBack {
+            width: 15em;
+            height: 15em;
+            border: solid .2em black;
+            margin: 0;
+        }
+
+        /* flip speed goes here */
+        .flipper {
+            transition: 0.6s;
+            transform-style: preserve-3d;
+
+            position: relative;
+        }
+
+        /* hide back of pane during swap */
+        .front, .back, .secondBack {
+            backface-visibility: hidden;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* front pane, placed above back */
+        .front {
+            z-index: 2;
+            /* for firefox 31 */
+            transform: rotateY(0deg);
+            background-color: bisque;
+        }
+
+        /* back, initially hidden pane */
+        .back {
+            z-index: 1;
+            transform: rotateY(180deg);
+        }
+
+        .secondBack {
+            z-index: 0;
+            transform: rotateY(180deg);
+            background-color: cyan;
+        }
+        /*.flip-container:hover .flipper, .flip-container.hover .flipper, .flip-container.flip .flipper {*/
+            /*transform: rotateY(180deg);*/
+        /*}*/
+
+    </style>
+</head>
+<body>
+<div id="wholeGame">
+    <h1>Tic Tac Toe</h1>
+    <div id = "gameboard" class="container">
+        <table>
+    <div class="row">
+        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                </div>
+                <div class="back">
+                    <!-- back content -->
+                </div>
+                <div class="secondBack">
+                    <!-- second back content -->
+                </div>
+            </div>
+        </div>
+     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                </div>
+                <div class="back">
+                    <!-- back content -->
+                </div>
+            </div>
+        </div>
+     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                </div>
+                <div class="back">
+                    <!-- back content -->
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="row">
+     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                </div>
+                <div class="back">
+                    <!-- back content -->
+                </div>
+            </div>
+        </div>
+
+     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                </div>
+                <div class="back">
+                    <!-- back content -->
+                </div>
+            </div>
+        </div>
+
+     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                </div>
+                <div class="back">
+                    <!-- back content -->
+                </div>
+            </div>
+        </div>
+            </div>
+            <div class="row">
+     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                </div>
+                <div class="back">
+                    <!-- back content -->
+                </div>
+            </div>
+        </div>
+
+     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                </div>
+                <div class="back">
+                    <!-- back content -->
+                </div>
+            </div>
+        </div>
+
+     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <!-- front content -->
+                </div>
+                <div class="back">
+                    <!-- back content -->
+                </div>
+            </div>
+        </div>
+            </div>
+        </table>
+    </div>
+
+
+
+
+    <button id="playerOne">Player One Commit</button>
+    <button id="playerTwo">Player Two Commit</button>
+</div>
+        <script
+        src="https://code.jquery.com/jquery-2.2.4.min.js"
+integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+crossorigin="anonymous"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ <script>
+
+//     document.querySelector("#myCard").classList.toggle("flip");
+ </script>                                                                                                                                                                                               <script>
+</body>
+</html>
