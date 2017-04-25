@@ -9,7 +9,7 @@
         .invisible {
             display: none;
         }
-        h1 {
+        #faqHead {
             text-align: center;
             border: solid .01em black;
             margin-right: 13.5%;
@@ -34,11 +34,35 @@
         dd {
             margin-top: .5em;
         }
+        .bold {
+            font-weight: bold;
+        }
+        .blue {
+            color: cyan;
+        }
+        #newsLetter {
+            border: solid .01em red;
+            margin-left: 20%;
+            margin-right: 20%;
+            text-align: center;
+        }
+        /*.hide {*/
+            /*visibility: hidden;*/
+        /*}*/
+        h2 {
+            text-align: center;
+            /*visibility: hidden;*/
+        }
     </style>
 </head>
 <body>
+<div id="newsLetter">
+    <h1>Would you like to sign up for our newsletter?</h1>
+    <span>X</span>
+</div>
+<h2>Do you want to register for this site?</h2>
 <div class="jumbotron">
-    <h1>Ten FAQ's about National Parks</h1>
+    <h1 id="faqHead">Ten FAQ's about National Parks</h1>
     <div class="container">
         <dl>
             <dt>Who is the director of the National Park Service?</dt>
@@ -97,6 +121,8 @@
         integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
 <script>
+    $("h2").hide();
+    $("h3").next().hide();
     $("dt").click(function() {
         $(this).nextUntil( "dt" ).toggleClass("invisible");
         $(this).toggleClass("highlight");
@@ -105,18 +131,35 @@
 
         $("ul").each(function(index) {
             $(this).children().last().toggleClass("highlight");
+//             $("ul").each(function(index, element) {
+//            $(element).children().last().toggleClass("highlight");
+//
         });
         });
 
+//    $("h3").click()(function(){
+//                $(this).next().css("font-weight", "bold");
+//        });
     $("h3").click(function(){
-                $(this).next().css("font-weight", "bold");
+                $(this).next().toggleClass("bold");
         });
 
     $("li").click(function(){
 
-        $(this).parent().children().first().css("background-color", "blue");
+        $(this).parent().children().first().toggleClass("blue");
 
     });
+    $("span").click(function(){
+        $(this).parent().hide();
+    });
+
+
+
+    $("h3").click(function () {
+        $(this).next().show();
+    });
+
+        $("h2").delay(8000).fadeIn(500);
 </script>
 </body>
 </html>
