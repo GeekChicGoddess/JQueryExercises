@@ -81,7 +81,18 @@
         //             its contents and fields
         //       HINT: You will want to target #insertProducts for your new HTML elements
 
-
+$.get("http../weather  or /forecast/daily". {
+    AAPID: "key",
+        q: "San Antonio, TX"
+        units: "imperial",
+        lat: 45,
+        lon: 45,
+        cnt: 5
+        }).done(function(data){
+            console.log(data);
+        }).fail(function (data) {
+            console.log(data.statusText);
+        });
     });
 </script>
 
