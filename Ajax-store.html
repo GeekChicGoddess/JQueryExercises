@@ -4,26 +4,58 @@
 <head>
     <title>Online Store</title>
 </head>
-<style>
-    td {
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<style type="text/css">
+    body{
+        background-color: lightsteelblue;
+    }
+    table{
+        background-color: lightgrey;
+        margin-left: 13%;
+        margin-top: 4%;
+        width: 75%!important;%;
+        font-size: larger;
+        box-shadow: 10px 10px 5px #888888;
+    }
+    h1 {
+        font-size: 6em;
         text-align: center;
+        padding-top: 2%;
+    }
+    div{
+        background-color:lavender;
+        width: 80%;
+        margin-left: 10%;
+        margin-top: 10%;
+        padding-bottom: 5%;
+        border: solid .5em darkslateblue;
+        box-shadow: 10px 10px 5px #2c263f;
+    }
+    td:first-of-type{
+        font-weight: bold;
+    }
+
+    th {
+        font-size: x-large;
     }
 </style>
 <body>
+<div id="tableDiv">
+    <h1>My Tool Store</h1>
 
-<h1>My Tool Store</h1>
+    <table id="products" class="table table-striped table-bordered">
 
-<table id="products">
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Categories</th>
-    </tr>
-    </thead>
-    <tbody id="insertProducts"></tbody>
-
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Categories</th>
+        </tr>
+        </thead>
+        <tbody id="insertProducts"></tbody>
+</div>
 
 </table>
 
@@ -37,32 +69,13 @@
         var url = "Data/inventory.json";
 
 
-//
-//        function inventory(data) {
-//            data.responseJSON.forEach(function(el) {
-//                $("#insertProducts").append(el.title);
-//            })}
-       $.ajax(url).done(function(data){
-           data.forEach(function(i){
-            $("#insertProducts").append("<tr><td>"+i.title+"<td><td>"+i.quantity+"</td><td>"+i.price+"</td><td>"+i.categories+"</td><br>");
-           });
-           $("#insertProducts").append("<tr>");
+        $.ajax(url).done(function(data){
+            data.forEach(function(i){
+                $("#insertProducts").append("<tr><td>"+i.title+"</td><td>"+i.quantity+"</td><td>"+i.price+"</td><td>"+i.categories+"</td><br>");
+            });
+            $("#insertProducts").append("<tr>");
         });
 
-
-
-
-//  "<tr><td>"+i.title+"</td><td>"+i.quantity+"</td><td>+"i.price"+</td><td>"+i.categories"+</td></tr>"
-//                ("<tr><td>el.title</td><td>el.quantity</td><td>el.price</td><td>el.categories</td></tr>");
-//            });}
-
-
-        // function writeNames(names) {
-        //     names.results.forEach(function(el) {
-        //         $('.names').append('<li>' + el.name + '</li>');
-        //     });
-        // }
-//        console.log(myInventory);
         // TODO: Take the data from inventory.json and append it to the products table
         //       HINT: Your data should come back as a JSON object; use console.log() to inspect
         //             its contents and fields

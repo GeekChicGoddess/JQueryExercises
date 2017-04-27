@@ -31,32 +31,57 @@
         margin-top: 1em;
         background-color: beige;
         }
-
-        #playerOne {
-        margin-right: 10em;
+        #winner{
+            position: fixed;
+            top: 25%;
+            bottom: 0;
+            left: 10%;
+            right: 0;
+            display: none;
+            background-color: greenyellow;
+            height: 2em;
+            width: 80%;
+            font-size: 4em;
         }
+        #error{
+            position: fixed;
+            top: 25%;
+            bottom: 0;
+            left: 10%;
+            right: 0;
+            display: none;
+            background-color: palevioletred;
+            height: 2em;
+            width: 80%;
+            font-size: 4em;
+        }
+
     </style>
 </head>
 <body>
 <div id="wholegame">
 <div class="container">
+    <div id="winner"></div>
+    <div id="error"></div>
     <h1>Tic Tac Toe</h1>
     <div class="row">
-        <div id="upperLeft" class="tile blank"><img src="img/blank.png"></div>
-        <div id="upperCenter" class="tile blank"><img src="img/blank.png"></div>
-        <div id="upperRight" class="tile blank"><img src="img/blank.png"></div>
+        <div id="upperLeft" class="tile blank"></div>
+        <div id="upperCenter" class="tile blank"></div>
+        <div id="upperRight" class="tile blank"></div>
     </div>
     <div class="row">
-        <div id="middleLeft" class="tile blank"><img src="img/blank.png"></div>
-        <div id="center" class="tile blank"><img src="img/blank.png"></div>
-        <div id="middleRight" class="tile blank"><img src="img/blank.png"></div>
+        <div id="middleLeft" class="tile blank"></div>
+        <div id="center" class="tile blank"></div>
+        <div id="middleRight" class="tile blank"></div>
     </div>
     <div class="row">
-        <div id="lowerLeft" class="tile blank"><img src="img/blank.png"></div>
-        <div id="lowerCenter" class="tile blank"><img src="img/blank.png"></div>
-        <div id="lowerRight" class="tile blank"><img src="img/blank.png"></div>
+        <div id="lowerLeft" class="tile blank"></div>
+        <div id="lowerCenter" class="tile blank"></div>
+        <div id="lowerRight" class="tile blank"></div>
     </div>
-    <button id="playerOne">Commit Play</button>
+    <button id="commit">Commit Play</button><br><br>
+    <button id="startover">Start Over</button>
+
     <!--<button id="playerTwo">Commit O</button>-->
 </div>
 </div>
@@ -67,109 +92,141 @@
         crossorigin="anonymous">
 </script>
 <script>
-    var imageX = "<img src=\"img/x.png\">";
-    var imageO = "<img src=\"img/O.png\">";
-    var imageBlank = "<img src=\"img/blank.png\">";
-    var id ="";
-    var gameboardArray = [
-        ["upperLeft", "upperCenter", "upperRight"],
-        ["middleLeft", "center", "middleRight"],
-        ["lowerLeft", "lowerCenter", "lowerRight"],
-        ["upperLeft", "middleLeft", "lowerLeft"],
-        ["upperCenter", "center", "lowerCenter"],
-        ["upperRight", "middleRight", "lowerRight"],
-        ["upperLeft", "center", "lowerRight"],
-        ["upperRight", "center", "lowerLeft"]
-    ];
-    var playerX = true;
-    var playerO = false;
-    var idToRevert = "";
-    function arrayTheSame(array, temp){
-        for (var i = 0; i < temp.length; i++) {
-            for (var j = 0; j < temp[i].length; j++) {
-                if (temp[i][j] != array[i][j]) {
-                    idToRevert = array[i][j];
-                    return false;
-                    break;
-                }
-            }
-        }
-        return true;
-    }
-    var tempArray = gameboardArray.map(function(arr) {
-        return arr.slice();
-    });
-
-    $(".tile").click(function(){
-        var image = "";
-
-        var XorO = "";
-
-        if (playerX) {
-            image = imageX;
-            XorO = "X";
-        }
-        if (playerO) {
-            image = imageO;
-            XorO = "O";
-        }
-        console.log(playerO +" o");
-        console.log(playerX +" x");
-    var noOtherChanges = arrayTheSame(gameboardArray, tempArray);
-
-        console.log(noOtherChanges);
-        if(!noOtherChanges) {
-
-            idToRevert = "#" + idToRevert;
-            console.log(idToRevert);
-            $(idToRevert).html(imageBlank);
-            tempArray = [];
-
-            tempArray = gameboardArray.map(function(arr) {
-                return arr.slice();
-            });
-
-        }
-
-         id = $(this).attr("id");
-
-
-        for (var i = 0; i < tempArray.length; i++) {
-            for (var j = 0; j < tempArray[i].length; j++) {
-                if (tempArray[i][j] == id) {
-                 tempArray[i].splice(j, 1, XorO);
-                }
-            }
-        }
-        console.log(tempArray);
-        console.log(gameboardArray);
-
-
-        $(this).html(image);
-
-    });
-    $("button").click(function(){
+        $(".tile").html("<img src='img/blank.png'>");
+        var imageX = "<img src=\"img/x.png\">";
+        var imageO = "<img src=\"img/O.png\">";
+        var imageBlank = "<img src=\"img/blank.png\">";
+        var id = "";
+        var gameboardArray = [
+            ["upperLeft", "upperCenter", "upperRight"],
+            ["middleLeft", "center", "middleRight"],
+            ["lowerLeft", "lowerCenter", "lowerRight"],
+            ["upperLeft", "middleLeft", "lowerLeft"],
+            ["upperCenter", "center", "lowerCenter"],
+            ["upperRight", "middleRight", "lowerRight"],
+            ["upperLeft", "center", "lowerRight"],
+            ["upperRight", "center", "lowerLeft"]
+        ];
+        var playerX = true;
+        var playerO = false;
         var xInARow = 0;
         var oInARow = 0;
-        gameboardArray=[];
-        gameboardArray = tempArray.map(function(arr) {
+        var idToRevert = "";
+
+        function arrayTheSame(array, temp) {
+            for (var i = 0; i < temp.length; i++) {
+                for (var j = 0; j < temp[i].length; j++) {
+                    if (temp[i][j] != array[i][j]) {
+                        idToRevert = array[i][j];
+                        return false;
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+
+        var tempArray = gameboardArray.map(function (arr) {
             return arr.slice();
         });
-        id="#"+id;
-        $(id).removeClass( "tile" );
+        var noOtherChanges = "";
 
-        if (!playerX) {
-            playerX = true;
-            playerO = false;
-            console.log("Change x to true");
-        }
-        else {
-            playerX = false;
-            playerO = true;
-            console.log("Change o to true");
-        }
 
+        $(".tile").click(function () {
+            $("#winner").css("display", "none");
+            $("#error").css("display", "none");
+            var image = "";
+
+            var XorO = "";
+
+            if (playerX) {
+                image = imageX;
+                XorO = "X";
+            }
+            if (playerO) {
+                image = imageO;
+                XorO = "O";
+            }
+            noOtherChanges = arrayTheSame(gameboardArray, tempArray);
+
+            if (!noOtherChanges) {
+
+                idToRevert = "#" + idToRevert;
+                $(idToRevert).html(imageBlank);
+                tempArray = [];
+
+                tempArray = gameboardArray.map(function (arr) {
+                    return arr.slice();
+                });
+
+            }
+
+            id = $(this).attr("id");
+
+
+            for (var i = 0; i < tempArray.length; i++) {
+                for (var j = 0; j < tempArray[i].length; j++) {
+                    if (tempArray[i][j] == id) {
+                        tempArray[i].splice(j, 1, XorO);
+                    }
+                }
+            }
+
+            $(this).html(image);
+
+            for (var i = 0; i < tempArray.length; i++) {
+                oInARow = 0;
+                xInARow = 0;
+                for (var j = 0; j < tempArray[i].length; j++) {
+                    if (tempArray[i][j] == "O") {
+                        oInARow++;
+                    }
+                    if (tempArray[i][j] == "X") {
+                        xInARow++;
+                    }
+                    if (oInARow == 3 || xInARow == 3) {
+                        $("#winner").text(XorO + " WINS!!");
+                        $("#winner").css("display", "inline");
+                    }
+                }
+            }
+
+        });
+        $("#commit").click(function () {
+
+            id = "#" + id;
+            if ((id.indexOf("##") != -1) || arrayTheSame(gameboardArray, tempArray)) {
+                $("#error").text("You must make a selection first");
+                $("#error").css("display", "inline");
+            }
+            else {
+                xInARow = 0;
+                oInARow = 0;
+                gameboardArray = [];
+                gameboardArray = tempArray.map(function (arr) {
+                    return arr.slice();
+                });
+
+
+                $(id).unbind("click");
+
+                if (!playerX) {
+                    playerX = true;
+                    playerO = false;
+                }
+                else {
+                    playerX = false;
+                    playerO = true;
+                }
+            }
+
+        });
+
+
+    $("#startover").click(function(){
+        location.reload();
     });
+
 </script>
 </body>
 </html>
