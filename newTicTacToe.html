@@ -102,17 +102,18 @@
             ["middleLeft", "center", "middleRight"],
             ["lowerLeft", "lowerCenter", "lowerRight"],
             ["upperLeft", "middleLeft", "lowerLeft"],
-            ["upperCenter", "center", "lowerCenter"],
             ["upperRight", "middleRight", "lowerRight"],
             ["upperLeft", "center", "lowerRight"],
-            ["upperRight", "center", "lowerLeft"]
+            ["upperRight", "center", "lowerLeft"],
+            ["upperCenter", "center", "lowerCenter"]
         ];
         var playerX = true;
         var playerO = false;
         var xInARow = 0;
         var oInARow = 0;
         var idToRevert = "";
-
+        var XorO = "";
+        var image = "";
         function arrayTheSame(array, temp) {
             for (var i = 0; i < temp.length; i++) {
                 for (var j = 0; j < temp[i].length; j++) {
@@ -131,13 +132,60 @@
         });
         var noOtherChanges = "";
 
+        function spliceXorO(id) {
+            for (var i = 0; i < tempArray.length; i++) {
+                for (var j = 0; j < tempArray[i].length; j++) {
+                    if (tempArray[i][j] == id) {
+                        tempArray[i].splice(j, 1, XorO);
+                    }
+                }
+            }
+        }
+        function makeReadyForNextPlayer (id){
+            xInARow = 0;
+            oInARow = 0;
+            gameboardArray = [];
+            gameboardArray = tempArray.map(function (arr) {
+                return arr.slice();
+            });
+
+
+            $(id).unbind("click");
+
+            if (!playerX) {
+                playerX = true;
+                playerO = false;
+            }
+            else {
+                playerX = false;
+                playerO = true;
+            }
+        }
+
+        function doWeHaveAWinner () {
+            for (var i = 0; i < tempArray.length; i++) {
+                oInARow = 0;
+                xInARow = 0;
+                for (var j = 0; j < tempArray[i].length; j++) {
+                    if (tempArray[i][j] == "O") {
+                        oInARow++;
+                    }
+                    if (tempArray[i][j] == "X") {
+                        xInARow++;
+                    }
+                    if (oInARow == 3 || xInARow == 3) {
+                        $("#winner").text(XorO + " WINS!!");
+                        $("#winner").css("display", "inline");
+                    }
+                }
+            }
+        }
 
         $(".tile").click(function () {
             $("#winner").css("display", "none");
             $("#error").css("display", "none");
-            var image = "";
 
-            var XorO = "";
+            XorO = "";
 
             if (playerX) {
                 image = imageX;
@@ -164,32 +212,10 @@
             id = $(this).attr("id");
 
 
-            for (var i = 0; i < tempArray.length; i++) {
-                for (var j = 0; j < tempArray[i].length; j++) {
-                    if (tempArray[i][j] == id) {
-                        tempArray[i].splice(j, 1, XorO);
-                    }
-                }
-            }
-
+        spliceXorO(id); // splice the clicked tile into the temp Array
             $(this).html(image);
+        doWeHaveAWinner();
 
-            for (var i = 0; i < tempArray.length; i++) {
-                oInARow = 0;
-                xInARow = 0;
-                for (var j = 0; j < tempArray[i].length; j++) {
-                    if (tempArray[i][j] == "O") {
-                        oInARow++;
-                    }
-                    if (tempArray[i][j] == "X") {
-                        xInARow++;
-                    }
-                    if (oInARow == 3 || xInARow == 3) {
-                        $("#winner").text(XorO + " WINS!!");
-                        $("#winner").css("display", "inline");
-                    }
-                }
-            }
 
         });
         $("#commit").click(function () {
@@ -200,28 +226,121 @@
                 $("#error").css("display", "inline");
             }
             else {
-                xInARow = 0;
-                oInARow = 0;
-                gameboardArray = [];
-                gameboardArray = tempArray.map(function (arr) {
-                    return arr.slice();
-                });
-
-
-                $(id).unbind("click");
-
-                if (!playerX) {
-                    playerX = true;
-                    playerO = false;
-                }
-                else {
-                    playerX = false;
-                    playerO = true;
-                }
+                    makeReadyForNextPlayer(id);
+                    autoplay();
             }
 
         });
 
+    var housePlay = "X";
+    var player = "O";
+    if (housePlay=="X"){
+        XorO = "X";
+            }
+            else {
+        XorO = "O";
+    }
+    var playerInARow = 0;
+   function defense () {
+       for (var i = 0; i < tempArray.length; i++) {
+           playerInARow = 0;
+           for (var j = 0; j < tempArray[i].length; j++) {
+               if (tempArray[i][j] == player) {
+                   playerInARow++;
+                   if (playerInARow == 2) {
+                       id = tempArray[i][j+1];
+                       spliceXorO(id);
+                       id="#"+id;
+                       $(id).html(image);
+                       makeReadyForNextPlayer(id);
+                       return true;
+                       console.log("defnse true");
+                       break;
+                   }
+               }
+           }
+
+           return false;
+       }
+   }
+   function offense () {
+       for (var i = 0; i < tempArray.length; i++) {
+           playerInARow = 0;
+           for (var j = 0; j < tempArray[i].length; j++) {
+               if (tempArray[i][j] == housePlay) {
+                   playerInARow++;
+                   if (playerInARow == 2) {
+                       id = tempArray[i][j+1];;
+                       return true;
+                       console.log("offense should win here");
+                       break;
+                   }
+               }
+           }
+           for (var i = 0; i < tempArray.length; i++) {
+               playerInARow = 0;
+           for (var j = 0; j < tempArray[i].length; j++) {
+               if (tempArray[i][j] == housePlay) {
+                   playerInARow++;
+                   if (playerInARow == 1) {
+                       id = tempArray[i][j + 1];
+                       return true;
+                       console.log("offense should have 2 in a row");
+                       break;
+                   }
+               }
+           }
+           }
+           for (var i = 0; i < tempArray.length; i++) {
+               playerInARow = 0;
+               for (var j = 0; j < tempArray[i].length; j+=2) {
+                   if (tempArray[i][j] == housePlay) {
+                       playerInARow++;
+                       if (playerInARow == 1) {
+                           id = tempArray[i][j + 1];
+                           return true;
+                           console.log("offense should have 1 a row in a corner");
+                           break;
+                       }
+                   }
+               }
+           }   for (var i = 0; i < tempArray.length; i++) {
+               playerInARow = 0;
+               for (var j = 0; j < tempArray[i].length; j++) {
+                   if (tempArray[i][j] == housePlay) {
+                       playerInARow++;
+                       if (playerInARow == 1) {
+                           id = tempArray[i][j + 1];
+                           return true;
+                           console.log("offense should have 1 a row in a center");
+                           break;
+                       }
+                   }
+               }
+           }
+           spliceXorO(id);
+           id="#"+id;
+           $(id).html(image);
+           makeReadyForNextPlayer()
+           return false;
+       }
+   }
+    function autoplay () {
+        image = imageX;
+
+        if (gameboardArray[1][1] == "center"){ // if center is available play center
+            spliceXorO("center")
+            makeReadyForNextPlayer("#center");
+        }
+        else {
+            var defenseFirst = defense();
+           if (!defenseFirst){
+               offense();
+           }
+        }
+
+    }
+    autoplay();
 
     $("#startover").click(function(){
         location.reload();
