@@ -10,26 +10,58 @@
         body {
             background-color: lightblue;
         }
-
-        .forecastDivs {
-            background-color: lightgrey;
-            height: 16em;
-            width: 20em;
-            display: inline-block;
-            margin: 1em;
-            margin-left: 1.2em;
-            padding-top: .5em;
-            padding-left: 3.5em;
-            border: solid .3em black;
-            font-size: 1.13em;
+        .container {
+            margin-left: 5em;
+            width: 100%!important;
         }
+
+        h1, select, #map {
+            margin-left: 18em;
+        }
+
+        h2 {
+            margin-left: 25em;
+        }
+
+        /*.forecastDivs {*/
+            /*background-color: lightgrey;*/
+            /*height: 18em;*/
+            /*width: 16em;*/
+            /*display: inline-block;*/
+            /*margin: 1em;*/
+            /*margin-left: 4.5em;*/
+            /*padding-top: .5em;*/
+            /*padding-left: 2.5em;*/
+            /*border: solid .1em black;*/
+            /*font-size: 1em;*/
+        /*}  */
+           .forecastDivs {
+               background-color: lightgrey;
+               height: 20em;
+               /*width: 16em;*/
+               display: inline-block;
+               margin: 1em;
+               /*margin-left: 4.5em;*/
+               padding-top: 0em;
+               padding-left: 2.5em;
+               border: solid .1em black;
+               font-size: .7em;
+           }
         img {
             margin-top: 0;
+            margin-left: 1em;
         }
-
-        .container {
-            margin-left: 20em;
-
+        h3 {
+            font-size: 2em;
+        }
+        #temp{
+            /*font-size: 2em;*/
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .titles{
+            font-weight: bold;
+            margin-right: .5em;
         }
 
         #map {
@@ -38,16 +70,9 @@
             background-color: lightsteelblue;
             margin-bottom: 1.5em;
         }
-        #temp{
-            font-size: 2em;
-            font-weight: bold;
-        }
-        .titles{
-            font-weight: bold;
-            margin-right: .5em;
-        }
+
         #lonlat {
-            margin-left: 2em;
+            margin-left: 20em;
         }
         #lonLabel {
             margin-left: 3em;
@@ -56,10 +81,12 @@
             margin-left: 1em;
         }
 
+
+
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
     <h1>Weather Application</h1>
     <h2 id="cityName"></h2>
     <select name="daysForecast">
@@ -74,13 +101,13 @@
         <option value="2">Show 2 Days Forecast</option>
         <option value="1">Show 1 Day Forecast</option>
     </select>
-   <button id="forecastChange">Submit</button>
+    <button id="forecastChange">Submit</button>
+<div class="container">
+    <div id="forcastDivsContainer" class="d-flex flex-row">
 
-    <div id="threeDays" class="row">
-        <div id="forecast0" class="forecastDivs"></div>
-        <div id="forecast1" class="forecastDivs"></div>
-        <div id="forecast2" class="forecastDivs"></div>
+
     </div>
+</div>
     <div id="map"></div>
     <div id="lonlat">
         <label>Latitude</label><input id="lat" type="number" value="29.6708">
@@ -110,12 +137,16 @@
                 lng: lon
             }
         };
-
+        var counter = 0;
+        var date = new Date();
+        var day = (date.getDay());
+        var dayArray =["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         function initMap() {
 
             map = new google.maps.Map(mapDisplay, options);
 
         }
+
         initMap();
         var marker = new google.maps.Marker({
             position: {
@@ -127,13 +158,31 @@
         });
 
         $("#forecastChange").click(function(){
+            for (var c = 0; c < daysCount; c++){
+                id = "#forecast"+c;
+                console.log(id);
+                $(id).remove();
+            }
+            day = (date.getDay());
             daysCount = $('select[name=daysForecast]').val();
-            console.log(daysCount);
             getWeather();
-        })
-
-
-
+            getCurrentWeather();
+        });
+        function getCurrentWeather () {
+            $.get("http://api.openweathermap.org/data/2.5/weather", {
+                APPID: "cf5050c0c4303753a04239e865a2dd5c",
+                lat: lat,
+                lon: lon,
+                units: "imperial"
+            }).done(function (data) {
+                var currenttemp = Math.floor(data.main.temp);
+                var contentString = "<img src='http://openweathermap.org/img/w/" + data.weather[0].icon + ".png'>Current Temperature: "+currenttemp + "&deg;"+ "<br>Current Conditions: "+ data.weather[0].description +"";
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                infowindow.open(map, marker);
+            });
+        }
 
         function getWeather () {
             $.get("http://api.openweathermap.org/data/2.5/forecast/daily", {
@@ -143,40 +192,92 @@
                 units: "imperial",
                 cnt: daysCount
             }).done(function (data) {
-                var counter = 0;
+                counter = 0;
                 data.list.forEach(function (i) {
+                    if (day==7){
+                        day=0;
+                    }
                     var forecastFill = "";
-                    forecastFill += "<p id='temp'>" + parseInt(i.temp.day) + "&deg;" + "/" + parseInt(i.temp.night) + "&deg;</p>";
-                    forecastFill += "<img src='http://openweathermap.org/img/w/" + i.weather[0].icon + ".png'>";
+                    forecastFill += "<div id='forecast"+counter+"' class='forecastDivs flex'>";
+                    forecastFill += "<p><h3>"+dayArray[day]+"</h3></p>";
+                    forecastFill += "<p id='temp'>" + parseInt(i.temp.day) + "&deg;" + "/" + parseInt(i.temp.night) + "&deg;";
+                    forecastFill += "<img src='http://openweathermap.org/img/w/" + i.weather[0].icon + ".png'></p>";
                     forecastFill += "<p><span class='titles'>" + i.weather[0].main + ":</span>  " + i.weather[0].description + "</p>";
                     forecastFill += "<p><span class='titles'> Humidity:</span>   " + i.humidity + "</p>";
                     forecastFill += "<p><span class='titles'>Wind: </span>  " + i.speed + "</p>";
-                    forecastFill += "<p><span class='titles'>Pressure: </span>  " + i.pressure + "</p>";
-                    var id = "#forecast" + counter;
-                    $(id).html(forecastFill);
+                    forecastFill += "<p><span class='titles'>Pressure: </span>  " + i.pressure + "</p><div>";
+//                    var id = "#forecast" + counter;
+                    $("#forcastDivsContainer").append(forecastFill);
                     counter++;
+                    day++
                 });
                 var cityName = data.city.name;
                 $("#cityName").text(cityName);
+                if (daysCount == 1) {
+                   $(".flex-row").css("margin-left", "40em");
+                }
+                else if (daysCount==2) {
+                   $(".flex-row").css("margin-left", "35em");
+                }
+                else if (daysCount==3) {
+                   $(".flex-row").css("margin-left", "28em");
+                }
+                else if (daysCount==4) {
+                   $(".flex-row").css("margin-left", "25em");
+                }
+                else if (daysCount==5) {
+                   $(".flex-row").css("margin-left", "19em");
+                }
+                else if (daysCount==6) {
+                   $(".flex-row").css("margin-left", "14em");
+                }
+                else if (daysCount==7) {
+                    $(".flex-row").css("margin-left", "8em");
+                }
+               else if (daysCount==8) {
+                   $(".flex-row").css("margin-left", "1em");
+                }
+                else if (daysCount==9) {
+                   $(".flex-row").css("margin-left", "-2em");
+                }
+                else {
+                   $(".flex-row").css("margin-left", "-8em");
+                   $(".flex-row").css("margin-right", "-5em");
+                }
             }).fail(function (data) {
                 console.log(data.statusText);
             });
         }
         getWeather();
+        getCurrentWeather();
+
 
         marker.addListener('dragend', function(event){
 //        lat = marker.getPosition().lat();
 //        lon = marker.getPosition().lng();
-        lat = event.latLng.lat();
-        lon = event.latLng.lng();
-        options.center.lng = lon;
-        options.center.lat = lat;
-        getWeather();
+            for (var c = 0; c < daysCount; c++){
+                id = "#forecast"+c;
+                console.log(id);
+                $(id).remove();
+            }
+            day = (date.getDay());
+            lat = event.latLng.lat();
+            lon = event.latLng.lng();
+            options.center.lng = lon;
+            options.center.lat = lat;
+            getWeather();
+            getCurrentWeather();
 
         });
-        getWeather();
+
         $("#weatherButton").click(function(){
-           var address = $("#findAddress").val();
+            for (var c = 0; c < daysCount; c++){
+                id = "#forecast"+c;
+                console.log(id);
+                $(id).remove();
+            }
+            day = (date.getDay());
+            var address = $("#findAddress").val();
             if (address == "") {
                 lat = parseFloat($("#lat").val());
                 lon = parseFloat($("#lon").val());
@@ -184,7 +285,8 @@
                 options.center.lat = lat;
                 options.center.lng = lon;
                 getWeather();
-                marker.setPosition({lat: lat, lng: lon})
+                marker.setPosition({lat: lat, lng: lon});
+                getCurrentWeather();
             }
             else {
                 var geocoder = new google.maps.Geocoder();
