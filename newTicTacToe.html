@@ -241,90 +241,129 @@
         XorO = "O";
     }
     var playerInARow = 0;
-   function defense () {
-       for (var i = 0; i < tempArray.length; i++) {
-           playerInARow = 0;
-           for (var j = 0; j < tempArray[i].length; j++) {
-               if (tempArray[i][j] == player) {
-                   playerInARow++;
-                   if (playerInARow == 2) {
-                       id = tempArray[i][j+1];
-                       spliceXorO(id);
-                       id="#"+id;
-                       $(id).html(image);
-                       makeReadyForNextPlayer(id);
-                       return true;
-                       console.log("defnse true");
-                       break;
-                   }
-               }
-           }
+    var competitorInARow = 0;
+        function defense () {
+            loop1:
+                for (var i = 0; i < tempArray.length; i++) {
+                    competitorInARow = 0;
+                    loop2:
+                        for (var j = 0; j < tempArray[i].length; j++) {
+                            if (tempArray[i][j] == housePlay){
+                                continue;
+                            }
+                            if (tempArray[i][j] != player){
+                                id = tempArray[i][j];
+                            }
+                            else {
+                                competitorInARow++;}
+                            if competitorInARow == 2) {
+            spliceXorO(id);
+            id="#"+id;
+            $(id).html(image);
+            makeReadyForNextPlayer(id);
+            return true;
+            console.log("defnse true");
+            break loop1;
+        }
 
-           return false;
-       }
-   }
-   function offense () {
-       for (var i = 0; i < tempArray.length; i++) {
-           playerInARow = 0;
-           for (var j = 0; j < tempArray[i].length; j++) {
-               if (tempArray[i][j] == housePlay) {
-                   playerInARow++;
-                   if (playerInARow == 2) {
-                       id = tempArray[i][j+1];;
-                       return true;
-                       console.log("offense should win here");
-                       break;
-                   }
-               }
-           }
+        }
+
+        return false;
+        }
+        }
+        function offenseLevel1 () {
+            loop1:
+                for (var i = 0; i < tempArray.length; i++) {
+                    playerInARow = 0;
+                    loop2:
+                        for (var j = 0; j < tempArray[i].length; j++) {
+                            if (tempArray[i][j] == player) {
+                                continue;
+                            }
+                            if (tempArray[i][j] != housePlay) {
+                                id = tempArray[i][j];
+                            }
+                            else {
+                                playerInARow++;
+                            }
+                            if (playerInARow == 2) {
+                                console.log("offense should win here");
+                                return false;
+                                break loop1;
+                            }
+                        }
+                    return true;
+                }
+       function offenseLevel2 () {
+         loop1:
            for (var i = 0; i < tempArray.length; i++) {
                playerInARow = 0;
+        loop2:
            for (var j = 0; j < tempArray[i].length; j++) {
-               if (tempArray[i][j] == housePlay) {
+                if (tempArray[i][j] == player) {
+                    continue
+                }
+               if (tempArray[i][j] != housePlay) {
+                   id = tempArray[i][j];
+               }
+               else {
                    playerInARow++;
-                   if (playerInARow == 1) {
-                       id = tempArray[i][j + 1];
+               }
+               if (playerInARow == 1) {
                        return true;
                        console.log("offense should have 2 in a row");
-                       break;
+                       return false;
+                       break loop1;
                    }
                }
            }
+           return true;
            }
-           for (var i = 0; i < tempArray.length; i++) {
-               playerInARow = 0;
-               for (var j = 0; j < tempArray[i].length; j+=2) {
-                   if (tempArray[i][j] == housePlay) {
-                       playerInARow++;
-                       if (playerInARow == 1) {
-                           id = tempArray[i][j + 1];
-                           return true;
-                           console.log("offense should have 1 a row in a corner");
-                           break;
-                       }
-                   }
-               }
-           }   for (var i = 0; i < tempArray.length; i++) {
-               playerInARow = 0;
-               for (var j = 0; j < tempArray[i].length; j++) {
-                   if (tempArray[i][j] == housePlay) {
-                       playerInARow++;
-                       if (playerInARow == 1) {
-                           id = tempArray[i][j + 1];
-                           return true;
-                           console.log("offense should have 1 a row in a center");
-                           break;
-                       }
-                   }
-               }
-           }
-           spliceXorO(id);
-           id="#"+id;
-           $(id).html(image);
-           makeReadyForNextPlayer()
-           return false;
-       }
-   }
+        function offenseLevel3() {
+        loop1:
+            for (var i = 0; i < tempArray.length; i++) {
+                playerInARow = 0;
+                loop2:
+                for (var j = 0; j < tempArray[i].length; j += 2) {
+                    if (tempArray[i][j] == player) {
+                        continue
+                    }
+                    if (tempArray[i][j] != housePlay) {
+                        id = tempArray[i][j];
+                    }
+                    else {
+                        playerInARow++;
+                    }
+                        if (playerInARow == 1) {
+                            id = tempArray[i][j + 1];
+                            return false;
+                            console.log("offense should have 1 a row in a corner");
+                            break loop1;
+                        }
+                    }
+                }
+            }
+        }
+        function offenseLevel4() {
+
+            for (var i = 0; i < tempArray.length; i++) {
+                playerInARow = 0;
+                for (var j = 0; j < tempArray[i].length; j++) {
+                    if (tempArray[i][j] == housePlay) {
+                        playerInARow++;
+                        if (playerInARow == 1) {
+                            id = tempArray[i][j + 1];
+                            return true;
+                            console.log("offense should have 1 a row in a center");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
     function autoplay () {
         image = imageX;
 
@@ -338,9 +377,13 @@
                offense();
            }
         }
-
+        spliceXorO(id);
+        id="#"+id;
+        console.log("id is "+ id);
+        $(id).html(image);
+        makeReadyForNextPlayer();
     }
-    autoplay();
+//    autoplay();
 
     $("#startover").click(function(){
         location.reload();

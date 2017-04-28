@@ -13,12 +13,12 @@
 
         .forecastDivs {
             background-color: lightgrey;
-            height: 17  em;
+            height: 16em;
             width: 20em;
             display: inline-block;
             margin: 1em;
             margin-left: 1.2em;
-            padding-top: 2em;
+            padding-top: .5em;
             padding-left: 3.5em;
             border: solid .3em black;
             font-size: 1.13em;
@@ -29,7 +29,7 @@
 
         .container {
             margin-left: 20em;
-            margin-top: 2em;
+
         }
 
         #map {
@@ -46,6 +46,15 @@
             font-weight: bold;
             margin-right: .5em;
         }
+        #lonlat {
+            margin-left: 2em;
+        }
+        #lonLabel {
+            margin-left: 3em;
+        }
+        #weatherButton {
+            margin-left: 1em;
+        }
 
     </style>
 </head>
@@ -53,13 +62,34 @@
 <div class="container">
     <h1>Weather Application</h1>
     <h2 id="cityName"></h2>
+    <select name="daysForecast">
+        <option value="10">Show 10 Days Forecast</option>
+        <option value="9">Show 9 Days Forecast</option>
+        <option value="8">Show 8 Days Forecast</option>
+        <option value="7">Show 7 Days Forecast</option>
+        <option value="6">Show 6 Days Forecast</option>
+        <option value="5">Show 5 Days Forecast</option>
+        <option value="4">Show 4 Days Forecast</option>
+        <option value="3">Show 3 Days Forecast</option>
+        <option value="2">Show 2 Days Forecast</option>
+        <option value="1">Show 1 Day Forecast</option>
+    </select>
+   <button id="forecastChange">Submit</button>
+
     <div id="threeDays" class="row">
-        <div id="forecast0" class="forecastDivs">
-        </div>
+        <div id="forecast0" class="forecastDivs"></div>
         <div id="forecast1" class="forecastDivs"></div>
         <div id="forecast2" class="forecastDivs"></div>
     </div>
     <div id="map"></div>
+    <div id="lonlat">
+        <label>Latitude</label><input id="lat" type="number" value="29.6708">
+        <label id="lonLabel">Longitude</label><input id="lon" type="number" value="-98.4288268">
+        <div id="addressInput"> <label>Input Address<input size="100px" type="text" id="findAddress"></label>
+            <button id="weatherButton">Get Weather</button>
+        </div>
+
+    </div>
 
 </div>
 
@@ -67,7 +97,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDykvV2wJZcdlJ8pfHGv_iEgmPBQhqlggU"></script>
 <script>
     $(document).ready(function(){
-
+        var daysCount = 3;
         var lat = 29.4241;
         var lon = -98.4936;
         var weatherCenter = { lat: lat, lng: lon };
@@ -80,6 +110,7 @@
                 lng: lon
             }
         };
+
         function initMap() {
 
             map = new google.maps.Map(mapDisplay, options);
@@ -95,6 +126,12 @@
             draggable: true
         });
 
+        $("#forecastChange").click(function(){
+            daysCount = $('select[name=daysForecast]').val();
+            console.log(daysCount);
+            getWeather();
+        })
+
 
 
 
@@ -104,7 +141,7 @@
                 lat: lat,
                 lon: lon,
                 units: "imperial",
-                cnt: 3
+                cnt: daysCount
             }).done(function (data) {
                 var counter = 0;
                 data.list.forEach(function (i) {
@@ -137,6 +174,36 @@
         getWeather();
 
         });
+        getWeather();
+        $("#weatherButton").click(function(){
+           var address = $("#findAddress").val();
+            if (address == "") {
+                lat = parseFloat($("#lat").val());
+                lon = parseFloat($("#lon").val());
+                weatherCenter = {lat: lat, lng: lon};
+                options.center.lat = lat;
+                options.center.lng = lon;
+                getWeather();
+                marker.setPosition({lat: lat, lng: lon})
+            }
+            else {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ "address": address }, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        map.setCenter(results[0].geometry.location);
+                        lat = results[0].geometry.location.lat();
+                        lon =  results[0].geometry.location.lng();
+                        options.center.lat = lat;
+                        options.center.lng = lon;
+                        getWeather();
+                        marker.setPosition({lat: lat, lng: lon})
+                    } else {
+                        alert("Geocoding was not successful - STATUS: " + status);
+                    }
+                });
+            }
+
+        })
 
 
     });
