@@ -139,7 +139,7 @@
     var image = "";
     var housePlay = "";
     var player = "";
-    var autoplaying = false
+    var autoplaying = false;
     function arrayTheSame(array, temp) {
         for (var i = 0; i < temp.length; i++) {
             for (var j = 0; j < temp[i].length; j++) {
@@ -187,6 +187,7 @@
     }
 
     function spliceXorO(id) {
+        console.log("splice funciton and id is "+ id);
         for (var i = 0; i < tempArray.length; i++) {
             for (var j = 0; j < tempArray[i].length; j++) {
                 if (tempArray[i][j] == id) {
@@ -206,7 +207,7 @@
         });
         gameStatusArray = tempStatusArray.slice();
 
-        $(id).unbind("click");
+        $(id).off("click");
 
         if (!playerX) {
             playerX = true;
@@ -233,30 +234,15 @@
                 if (oInARow == 3 || xInARow == 3) {
                     $("#winner").text(XorO + " WINS!!");
                     $("#winner").css("display", "inline");
+                    console.log(tempArray);
                 }
             }
         }
     }
-    $("#auto").click(function(){
-       autoplaying = true;
-     var whoGoesFirst = Math.floor(Math.random()*2);
-        if (whoGoesFirst == 1){
-            housePlay = "X";
-            player = "O";
-            $("#autoDraw").text("Dice roll says House is X and goes first.");
-            $("#autoDraw").css("display", "inline");
-            setTimeout(autoplay, 3000);
-        }
-        else{
-            housePlay = "O";
-            player = "X";
-            $("#autoDraw").text("Dice roll says you are X and go first");
-            $("#autoDraw").css("display", "inline");
-        }
 
-    });
+    $(".tile").on('click', tileClick);
 
-    $(".tile").click(function () {
+    function tileClick () {
         $("#winner").css("display", "none");
         $("#error").css("display", "none");
         $("#autoDraw").css("display", "none");
@@ -290,7 +276,7 @@
         spliceXorO(id); // splice the clicked tile into the temp Array
         $(this).html(image);
         doWeHaveAWinner();
-    });
+    }
 
 
     $("#commit").click(function () {
@@ -311,9 +297,9 @@
     function defense() {
         if(housePlay==="X"){
             for (var d = 0; d < gameStatusArray.length; d++){
-                console.log(gameStatusArray);
                 if (gameStatusArray[d]== -120){  //play in i0
                     id = gameboardArray[d][0];
+                    console.log("Defense and id is "+id);
                     spliceXorO(id);
                     return true;
                     break;
@@ -321,6 +307,7 @@
                 else if (gameStatusArray[d] == -100){
                     console.log("100");
                     id = gameboardArray[d][1];
+                    console.log("Defense and id is "+id);
                     spliceXorO(id);
                     return true;
                     break;
@@ -328,6 +315,7 @@
                 }
                 else if (gameStatusArray[d]== -60){
                     id = gameboardArray[d][2];
+                    console.log("Defense and id is "+id);
                     spliceXorO(id);
                     return true;
                     break;
@@ -339,6 +327,7 @@
             for (var d = 0; d < gameStatusArray.length; d++) {
                 if (gameStatusArray[d] == 12) {
                     id = gameboardArray[d][0];
+                    console.log("Defense and id is "+id);
                     spliceXorO(id);
                     return true;
                     break;
@@ -347,6 +336,7 @@
                 else if (gameStatusArray[d] == 10) {
                     //play in i1
                     id = gameboardArray[d][1];
+                    console.log("Defense and id is "+id);
                     spliceXorO(id);
                     return true;
                     break;
@@ -354,6 +344,7 @@
                 else if (gameStatusArray[d] == 4) {
                     //play in i2
                     id = gameboardArray[d][2];
+                    console.log("Defense and id is "+id);
                     spliceXorO(id);
                     return true;
                     break;
@@ -407,55 +398,83 @@
                     break;
                 }
             }
+            console.log("goforwin and id is "+id);
         }
         return false;
     }
 
     function goForTwoInaRow () {
         if (housePlay === "X") {
-        for (var i = 0; i < gameStatusArray.length; i++) {
+            for (var i = 0; i < gameStatusArray.length; i++) {
                 if ((gameStatusArray[i] === 9) || (gameStatusArray === 3)) {  //play in i0
                     id = gameboardArray[i][0];
+                    console.log("TwoinARow and id is "+id);
                     spliceXorO(id);
                     return true;
                     break;
                 }
                 if (gameStatusArray[i] === 1) {  //play in i2
                     id = gameboardArray[i][2];
+                    console.log("TwoinARow and id is "+id);
                     spliceXorO(id);
                     return true;
                     break;
                 }
             }
         }
-    else {
-        for (var i = 0; i < gameStatusArray.length; i++) {
-            if ((gameStatusArray[i] === -80) || (gameStatusArray === -40)) {  //play in i0
-                id = gameboardArray[i][0];
-                spliceXorO(id);
-                return true;
-                break;
-            }
-            if (gameStatusArray[i] === -20) {  //play in i2
-                id = gameboardArray[i][2];
-                spliceXorO(id);
-                return true;
-                break;
+        else {
+            for (var i = 0; i < gameStatusArray.length; i++) {
+                if ((gameStatusArray[i] === -80) || (gameStatusArray === -40)) {  //play in i0
+                    id = gameboardArray[i][0];
+                    console.log("TwoinARow and id is "+id);
+                    spliceXorO(id);
+                    return true;
+                    break;
+                }
+                if (gameStatusArray[i] === -20) {  //play in i2
+                    id = gameboardArray[i][2];
+                    console.log("TwoinARow and id is "+id);
+                    spliceXorO(id);
+                    return true;
+                    break;
+                }
             }
         }
-    }
-    return false;
+        return false;
     }
 
     function startNewRow () {
-        for (var i = 0; i < gameStatusArray.length; i++) {
-            if (gameStatusArray[i] === 0) {  //play in i0
-                id = gameboardArray[i][0];
-                spliceXorO(id);
-                return true;
-                break;
+        var idReview = "";
+        loop1:
+            for (var i = 0; i < gameStatusArray.length; i++) {
+//            console.log ("loop 1 and i is "+ i);
+                if (gameStatusArray[i] === 0) {  // is the row(index) empty?
+//                    console.log ("loop 1 and i is empty i is"+ i);
+                    loop2:    for (var j = 0; j<3; j++){
+                        idReview = gameboardArray[i][j];// if it is empty, let's look at all the id's in the row
+                        console.log ("loop 2 and j is "+ j+ " and looking at id "+idReview);
+                        loop3:    for (var k=0; k<gameStatusArray.length; k++){ // were going to look at all the other rows
+//                            console.log ("loop 3 and k is "+ k);
+                            if (gameStatusArray[k]!==0){  // if a row is not empty (zero)..
+//                                console.log ("loop 3 and k is 0 at "+ k);
+                                loop4: for (var l = 0; l<3; l++) {
+//                                    console.log ("loop 4 and l is "+ l + " and kl is " +gameboardArray[k][l]);
+                                    if (gameboardArray[k][l] === idReview) { // we check if our id is also in this nonEmpty row
+//                                        console.log ("loop 4 and kl is idReview"+ gameboardArray[k][l]);
+                                        break loop3; // if we find a match, don't play this spot
+                                    }
+                                }
+                            }
+                        }
+                    }
+//                    console.log ("we have a winner"+ i + j);
+                    id = gameboardArray[i][j-1];
+                    console.log("startANewRow and id is "+id);
+                    spliceXorO(id);
+                    return true;
+                    break loop1;
+                }
             }
-        }
         return false;
     }
 
@@ -463,18 +482,21 @@
         for (var i = 0; i < gameStatusArray.length; i++) {
             if ((gameStatusArray[i] === -77) || (gameboardArray[i]=== -31)) {  //play in i0
                 id = gameboardArray[i][0];
+                console.log("playtoDraw and id is "+id);
                 spliceXorO(id);
                 return true;
                 break;
             }
             if ((gameStatusArray[i] === -11) || (gameStatusArray === -79)) {  //play in i1
                 id = gameboardArray[i][1];
+                console.log("playtoDraw and id is "+id);
                 spliceXorO(id);
                 return true;
                 break;
             }
             if ((gameStatusArray[i] === -39) || (gameStatusArray === -17)) {  //play in i2
                 id = gameboardArray[i][2];
+                console.log("playtoDraw and id is "+id);
                 spliceXorO(id);
                 return true;
                 break;
@@ -484,48 +506,104 @@
 
     function autoplay() {
         $("#autoDraw").css("display", "none");
-        id="";
-        if (housePlay=="X"){
+        console.log("autoplay going");
+        id = "";
+        if (housePlay == "X") {
             XorO = "X";
             image = imageX;
         }
-        else if (housePlay == "O"){
+        else if (housePlay == "O") {
             XorO = "O";
             image = imageO;
         }
-        if (gameboardArray[0][1] === "center"){
+        else{}
+        if (gameboardArray[0][1] === "center") {
             id = "center";
             spliceXorO(id);
+            console.log("playing center");
         }
         else {
             var houseWins = (goForTheWin());
-            if (houseWins) {
-                doWeHaveAWinner();}
-            else{
+            if (!houseWins) {
                 var defended = (defense());
-                console.log(defended);
                 if (!defended) {
-                    var getTwo = (goForTwoInaRow());
-                    if (!getTwo) {
-                        var newRow = (startNewRow());
-                        if (!newRow) {
-                            playToaDraw();
+                    var goForWin = (goForTheWin());
+                    if (!goForWin) {
+                        var getTwo = (goForTwoInaRow());
+                        if (!getTwo) {
+                            var newRow = (startNewRow());
+                            if (!newRow) {
+                                playToaDraw();
+                            }
                         }
                     }
                 }
             }
         }
-        id="#"+id;
-        console.log("id is "+ id);
-        console.log(tempStatusArray);
+        id = "#" + id;
         $(id).html(image);
         makeReadyForNextPlayer(id);
     }
 
-
     $("#startover").click(function(){
         location.reload();
     });
+
+    $("#auto").click(function(){
+//        first reset the game board =================================================================
+        $(".tile").on('click', tileClick);
+        $(".tile").html("<img src='img/blank.png'>");
+        id = "";
+        gameboardArray = [
+            ["upperRight", "center", "lowerLeft"],
+            ["upperCenter", "center", "lowerCenter"],
+            ["upperLeft", "upperCenter", "upperRight"],
+            ["lowerLeft", "lowerCenter", "lowerRight"],
+            ["upperLeft", "middleLeft", "lowerLeft"],
+            ["upperRight", "middleRight", "lowerRight"],
+            ["upperLeft", "center", "lowerRight"],
+            ["middleLeft", "center", "middleRight"]
+        ];
+        gameStatusArray = [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ];
+        xInARow = 0;
+        oInARow = 0;
+        tempArray = gameboardArray.map(function (arr) {
+            return arr.slice();
+        });
+        tempStatusArray = gameStatusArray.slice();
+//    start the autoplaying event ============================================================
+        autoplaying = true;
+        var whoGoesFirst = Math.floor(Math.random()*2.9);
+        if (whoGoesFirst == 1){
+            housePlay = "X";
+            player = "O";
+            playerX=true;
+            playerO=false;
+            $("#autoDraw").text("Dice roll says House is X and goes first.");
+            $("#autoDraw").css("display", "inline");
+            autoplay();
+        }
+        else{
+            housePlay = "O";
+            player = "X";
+            playerX=true;
+            playerO=false;
+            $("#autoDraw").text("Dice roll says you are X and go first");
+            $("#autoDraw").css("display", "inline");
+        }
+
+    });
+
+
 
 </script>
 </body>

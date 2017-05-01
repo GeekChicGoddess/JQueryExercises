@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>adv styling</title>
+    <style type="text/css">
+        .grid {
+            width: 80%;
+            margin: auto;
+            background-color: gray;
+            text-align: center;
+        }
+
+        .box {
+            width: 25%;
+            max-width: 250px;
+            padding: 20px;
+            border: solid 1px black;
+            display: inline-block;
+            margin: auto;
+        }
+        #box1 {
+            background-color: pink;
+        } #box2 {
+            background-color: lightcyan;
+        } #box3 {
+            background-color: lightgoldenrodyellow;
+        }
+        .tab {
+            height: 20px;
+            width: 50px;
+            background-color: lightsteelblue;
+            display: inline-block;
+        }
+        .section.active {
+            visibility: visible;
+        }
+
+        .section {
+            height: 505px;
+            width: 1000px;
+            background-color: #DDD4C4;
+            display: inline-block;
+            visibility: hidden;
+        }
+
+        @media screen and (max-width: 600px){
+            .grid {
+                width: 100%;
+            }
+            .box{
+                max-width: 600px;
+                width: 80%;
+                margin: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="grid">
+    <div id="box1" class="box">
+        <h1>Column 1, Fixed</h1>
+        <p>This could be whatever</p>
+        <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet asperiores, corporis dolorem error et excepturi fugit iste modi, nostrum perferendis quis repellat rerum, soluta ullam unde. Laborum nihil repellat similique.</span></p>
+
+    </div>
+    <div id="box2" class="box">
+        <h1>Column 2, Fluid</h1>
+        <p>This could be whatever</p>
+        <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus deserunt eveniet impedit inventore labore nesciunt nobis quam quo saepe vel. Ab corporis dignissimos enim labore provident? Eius facere recusandae repellat.</span></p>
+    </div>
+    <div id="box3" class="box">
+        <h1>Column 3, Fixed</h1>
+        <p>This could be whatever</p>
+        <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur cum, deleniti doloribus eaque esse exercitationem expedita explicabo facilis hic iste libero odio pariatur praesentium quis quo repellendus sapiente sed veniam!</span></p>
+    </div>
+</div>
+
+<div id="container">
+    <div id="tabs">
+        <div class="tab one" id="tab1">one
+        </div>
+        <div class="tab two" id="tab2">two
+
+        </div>
+        <div class="tab three" id="tab3">three
+
+        </div>
+        <div class="tab four" id="tab4">four
+
+        </div>
+    </div>
+    <div id="sections">
+        <div class="section active" id="section1">ichi</div>
+        <div class="section two" id="section2">ni</div>
+        <div class="section three" id="section3">san</div>
+        <div class="section four" id="section4">shi</div>
+    </div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+$("document").ready(function(){
+$(".tab").click(function() {
+    var id = "#section" + ($(this).attr("id")).split("")[3];
+    console.log(id);
+    $("*[id*='section']").removeClass("active");
+
+    $(id).addClass("active");
+});
+//$(".tabs").click(function(){
+//var id = ($(this).att.('id')).split('-');
+//sections remove class activ
+//tabs remove class active
+//        "#t-" +id[1].addClass('current');
+//        "#s-" +id[1].addClass('current');
+//
+//});
+
+
+
+
+
+
+});
+</script>
+</body>
+</html>
