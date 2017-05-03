@@ -300,7 +300,8 @@
               display: none;
             }
             #limitsButton {
-               display: none;
+                display: none;
+                cursor: pointer;
             }
             #options {
                 display: block;
@@ -327,6 +328,7 @@
             }
             .buttonWraps {
                 display: table;
+                cursor: pointer;
 
             }
             #forcastDivsContainer {
@@ -619,6 +621,17 @@
         var month = date.getMonth();
         var monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var dayArray =["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var optionsOnOff = {
+            dayButton: "on",
+            nightButton: "on",
+            pressureButton: "on",
+            humidityButton: "on",
+            windButton: "on",
+            iconButton: "on"
+        }
+        var whichButton;
+        var buttonEvent = false;
+
         function initMap() {
 
             map = new google.maps.Map(mapDisplay, options);
@@ -629,29 +642,73 @@
             $("#options").toggle();
         });
         $("#options .buttonWraps").click(function () {
-            var whichButton = $(this).attr("id");
+            whichButton = $(this).attr("id");
+            buttonEvent = true;
+            toggleDisplays(whichButton);
+        });
+
+
+        function toggleDisplays (whichButton){
+
             switch (whichButton){
                 case "dayButton":
                     $(".dayTemp").toggle();
+                    if (optionsOnOff.dayButton === "on" && buttonEvent){
+                        optionsOnOff.dayButton= "off";
+                    }
+                    else if (optionsOnOff.dayButton === "off"  && buttonEvent){
+                        optionsOnOff.dayButton = "on";
+                    }
                     break;
                 case "nightButton":
                     $(".nightTemp").toggle();
+                    if (optionsOnOff.nightButton  === "on" && buttonEvent){
+                        optionsOnOff.nightButton = "off";
+                    }
+                    else if (optionsOnOff.nightButton  === "off" && buttonEvent){
+                        optionsOnOff.nightButton = "on";
+                    }
                     break;
                 case "pressureButton":
                     $(".pressure").toggle();
+                    if (optionsOnOff.pressureButton === "on" && buttonEvent){
+                        optionsOnOff.pressureButton = "off";
+                    }
+                    else if (optionsOnOff.pressureButton === "off" && buttonEvent){
+                        optionsOnOff.pressureButton = "on";
+                    }
                     break;
                 case "humidityButton":
                     $(".humidity").toggle();
+                    if (optionsOnOff.humidityButton === "on" && buttonEvent){
+                        optionsOnOff.humidityButton = "off";
+                    }
+                    else if (optionsOnOff.humidityButton === "off" && buttonEvent) {
+                        optionsOnOff.humidityButton = "on";
+                    }
                     break;
                 case "windButton":
                     $(".wind").toggle();
+                    if (optionsOnOff.windButton === "on" && buttonEvent){
+                        optionsOnOff.windButton = "off";
+                    }
+                    else if (optionsOnOff.windButton === "off" && buttonEvent){
+                        optionsOnOff.windButton = "on";
+                    }
                     break;
                 case "iconButton":
                     $("img").toggle();
+                    if (optionsOnOff.iconButton === "on" && buttonEvent){
+                        optionsOnOff.iconButton = "off";
+                    }
+                    else if (optionsOnOff.iconButton === "off" && buttonEvent){
+                        optionsOnOff.iconButton = "on";
+                    }
                     break;
 
             }
-        });
+            buttonEvent = false;
+        }
 
         $("#daysDisplayButton").click(function () {
             $("#daysOptions").toggle();
@@ -753,7 +810,11 @@
                 });
                 var cityName = data.city.name;
                 $("#cityName").text(cityName);
-
+                for(key in optionsOnOff) {
+                    if (optionsOnOff[key] === "off") {
+                        toggleDisplays(key);
+                    }
+                }
             }).fail(function (data) {
                 console.log(data.statusText);
             });
